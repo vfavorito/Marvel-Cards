@@ -119,7 +119,7 @@ $(document).ready(function () {
             $("#letterButtons").append(letterButton);
         }
     }
-// this either opens or closes the modal and adds info to modal
+    // this either opens or closes the modal and adds info to modal
     function toggleModal() {
         $("#modalInfo").empty();
         $("#music-button").text("Pause Music");
@@ -161,20 +161,20 @@ $(document).ready(function () {
     }
 
     //easter egg
-    $("#teamName").on("click", function(){
-        let teamName="369681531";
+    $("#teamName").on("click", function () {
+        let teamName = "369681531";
         let teamURL = "https://cors-anywhere.herokuapp.com/" + "https://api.deezer.com/search/track?q=" + teamName;
         $.ajax({
             url: teamURL,
             method: "GET"
         }).then(function (response) {
             console.log(response);
-               let playerURL = "https://www.deezer.com/plugins/player?format=classic&autoplay=true&playlist=false&width=400&height=10&color=EF5466&layout=dark&size=medium&type=tracks&id=" +
-                teamName+ "&app_id=444442";
+            let playerURL = "https://www.deezer.com/plugins/player?format=classic&autoplay=true&playlist=false&width=400&height=10&color=EF5466&layout=dark&size=medium&type=tracks&id=" +
+                teamName + "&app_id=444442";
 
             let deezerPlayer = $("#player");
             deezerPlayer.attr("src", playerURL);
-    });
+        });
     });
 
 
@@ -204,23 +204,33 @@ $(document).ready(function () {
         for (let i = 0; i < localStorage.length; i++) {
             let newCard = JSON.parse(localStorage.getItem(i));
             cards.push(newCard);
-            console.log(cards);
         }
-        if (cards.length != null) {
+        if (cards.length !== null) {
             $("#card-gallery").empty();
             for (let i = 0; i < cards.length; i++) {
-                let cardEl = $("<div>");
-                cardEl.addClass("cardEl");
-                let cardStyle = cards[i].style;
-                cardEl.css("background-image", "url(" + cardStyle + ")");
-                let cardPic = $("<img>");
-                cardPic.addClass("cardPic");
-                cardPic.attr("src", cards[i].pic);
-                let cardName = $("<h5>");
-                cardName.text(cards[i].name);
-                cardName.addClass("cardName");
-                cardEl.append(cardPic, cardName);
-                $("#card-gallery").prepend(cardEl);
+                if (typeof cards[i] === "object" && cards[i] !== null) {
+                    if ("style" in cards[i]) {
+                        let cardEl = $("<div>");
+                        cardEl.addClass("cardEl");
+                        let cardStyle = cards[i].style;
+                        cardEl.css("background-image", "url(" + cardStyle + ")");
+                        let cardPic = $("<img>");
+                        cardPic.addClass("cardPic");
+                        cardPic.attr("src", cards[i].pic);
+                        let cardName = $("<h5>");
+                        cardName.text(cards[i].name);
+                        cardName.addClass("cardName");
+                        cardEl.append(cardPic, cardName);
+                        $("#card-gallery").prepend(cardEl);
+                    }
+                    else {
+                        return
+                    }
+                }
+
+                else {
+                    return;
+                }
             }
         }
         else {
@@ -311,12 +321,12 @@ $(document).ready(function () {
         modal.classList.toggle("show-modal");
         $("#player").attr("src", "");
     });
-    $("#music-button").on("click",function(){
-        if($("#music-button").text()==="Pause Music"){
+    $("#music-button").on("click", function () {
+        if ($("#music-button").text() === "Pause Music") {
             $("#music-button").text("Play Music");
             $("#player").attr("src", "");
         }
-        else{
+        else {
             $("#music-button").text("Pause Music");
             $("#player").attr("src", playerURL);
             console.log(playerURL);
