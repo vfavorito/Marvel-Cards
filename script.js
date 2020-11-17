@@ -223,18 +223,9 @@ $(document).ready(function () {
                         cardEl.append(cardPic, cardName);
                         $("#card-gallery").prepend(cardEl);
                     }
-                    else {
-                        return
-                    }
-                }
 
-                else {
-                    return;
                 }
             }
-        }
-        else {
-            return;
         }
     }
     // this event listener is triggered when you click a comic and displays the characters in that comic
